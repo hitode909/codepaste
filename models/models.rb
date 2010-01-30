@@ -56,6 +56,7 @@ module ::Model
       String :body, :null => false
       foreign_key :user_id, :null => false
       foreign_key :project_id, :null => false
+      foreign_key :file_id
       datetime :created_at
       datetime :updated_at
     end

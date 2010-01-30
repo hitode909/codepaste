@@ -7,6 +7,9 @@ describe Model::User do
   before do
     @aliver = load("model/user__aliver")
     @zombie = load("model/user__zombie")
+    @diary = load("model/project__diary")
+    @title = load("model/file__title")
+    @hey = load("model/note__hey")
   end
 
   it 'has user class' do
@@ -28,5 +31,16 @@ describe Model::User do
   it 'has is_alive' do
     @aliver.is_alive.should be_true
     @zombie.is_alive.should be_false
+  end
+
+  it 'has projects relations' do
+    @aliver.projects.should == [@diary]
+  end
+
+  it 'has files relations' do
+    @aliver.files.should == [@title]
+  end
+  it 'has notes relations' do
+    @aliver.notes.should == [@hey]
   end
 end
