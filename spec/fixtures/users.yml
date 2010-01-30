@@ -1,0 +1,10 @@
+aliver:
+  name: aliver
+  password: all
+  is_alive: true
+  profile: from Brasil.
+
+zombie:
+  name: zombie
+  password: zoo
+  is_alive: false
