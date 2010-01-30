@@ -2,7 +2,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require File.dirname(__FILE__) + '/../models_helper'
 
-describe Model::File do
+describe Model::Note do
   include Model
   before do
     @aliver = load("model/user__aliver")
