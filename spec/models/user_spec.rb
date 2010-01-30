@@ -24,4 +24,9 @@ describe Model::User do
     @aliver.profile.should == 'from Brasil.'
     @zombie.profile.should be_nil
   end
+
+  it 'has is_alive' do
+    @aliver.is_alive.should be_true
+    @zombie.is_alive.should be_false
+  end
 end
