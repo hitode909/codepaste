@@ -6,6 +6,7 @@ module ::Model
       String :password, :null => false
       String :profile
       Boolean :is_alive, :null => false, :default => true
+      Boolean :is_admin, :null => false, :default => false
       datetime :created_at
       datetime :updated_at
     end

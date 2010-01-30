@@ -7,6 +7,7 @@ describe Model::User do
   before do
     @aliver = load("model/user__aliver")
     @zombie = load("model/user__zombie")
+    @adminkun = load("model/user__adminkun")
     @diary = load("model/project__diary")
     @title = load("model/file__title")
     @hey = load("model/note__hey")
@@ -31,6 +32,11 @@ describe Model::User do
   it 'has is_alive' do
     @aliver.is_alive.should be_true
     @zombie.is_alive.should be_false
+  end
+
+  it 'has is_admin' do
+    @aliver.is_admin.should be_false
+    @adminkun.is_admin.should be_true
   end
 
   it 'has projects relations' do
