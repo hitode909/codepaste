@@ -1,19 +1,19 @@
 <html>
-<body>
-<h3>header</h3>
-<% unless @errors.empty? %>
-<h3>errors</h3>
-<% @errors.each { |e| %>
-<p><%= h e %></p>
-<% } %>
-<% end %>
-<% unless @messages.empty? %>
-<h3>messages</h3>
-<% @messages.each { |m| %>
-<p><%= h m %></p>
-<% } %>
-<% end %>
-<%= yield %>
-<h3>footer</h3>
-</body>
-</hrml>
+  <body>
+    <h3>header</h3>
+    <% unless @errors.empty? %>
+    <h3>errors</h3>
+    <% @errors.each { |e| %>
+    <p><%= h e %></p>
+    <% } %>
+    <% end %>
+    <% unless @messages.empty? %>
+    <h3>messages</h3>
+    <% @messages.each { |m| %>
+    <p><%= h m %></p>
+    <% } %>
+    <% end %>
+    <%= yield %>
+    <h3>footer</h3>
+  </body>
+</html>
