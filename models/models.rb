@@ -4,6 +4,7 @@ module ::Model
       primary_key :id
       String :name, :null => false
       String :password, :null => false
+      String :mail#, :null => false
       String :profile
       Boolean :is_alive, :null => false, :default => true
       Boolean :is_admin, :null => false, :default => false
@@ -15,6 +16,14 @@ module ::Model
     one_to_many :files
     one_to_many :notes
     create_table unless table_exists?
+
+    def self.register(name, password)
+      self.create(:name => name,:password => password)
+    end
+
+    def self.login(name, password)
+      self.find(:name => name,:password => password)
+    end
   end
 
   class Project < Sequel::Model
