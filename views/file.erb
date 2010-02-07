@@ -1,0 +1,19 @@
+<h2><%= h @file.name %></h2>
+<p>name: <%= h @file.name %></p>
+<p>body: <pre><%= h(@file.body).gsub("\n", "<br>") %></pre></p>
+<p>author: <%= h @file.user.name %></p>
+<% if @file.parent %>
+<p>parent: <a href="<%= h @file.parent.path %>"><%= h @file.parent.name %></a></p>
+<% end %>
+<h3>children</h3>
+<ul>
+  <% @file.children.each { |file| %>
+    <p><a href="<%= h file.path %>"><%= h file.name %></a>: <%= h file.body %></p>
+  <% } %>
+</ul>
+
+<h2>fork</h2>
+<form class="login-form" method="post" action="/file/<%= h @file.id %>.fork">
+    <input type="hidden" name="token" value="xxxxx" />
+    <input type="submit" value="Create"></input>
+</form>

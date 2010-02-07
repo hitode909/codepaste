@@ -31,15 +31,24 @@ module ::Model
       String :name, :null => false
       String :body, :null => false
       foreign_key :user_id, :null => false
-      foreign_key :parent_id, :table => :files
+      foreign_key :parent_id
       datetime :created_at
       datetime :updated_at
     end
     many_to_one :user
-    many_to_one :parent
+    many_to_one :parent, :key => :parent_id, :class => Model::File
     one_to_many :notes
+    one_to_many :children, :class => Model::File, :key => :parent_id
     plugin :timestamps, :update_on_create => true
     create_table unless table_exists?
+
+    def path
+      "/file/#{self.id}"
+    end
+
+    def fork!(user)
+      self.class.create(:name => self.name, :body => self.body, :user => user, :parent => self)
+    end
   end
 
   class Note < Sequel::Model

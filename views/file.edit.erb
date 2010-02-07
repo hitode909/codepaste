@@ -1,0 +1,8 @@
+<h2>Edit</h2>
+<form method="post" action="/file/<%= h @file.id %>.edit">
+  <table>
+    <tr><th>Name</th><td><input type="text" size="30" name="name" value="<%= h @file.name %>"></input></td></tr>
+    <tr><th>Description</th><td><textarea size="30" name="body" ><%= h @file.body %></textarea></td></tr>
+  </table>
+  <input type="submit" value="Edit"></input>
+</form>
