@@ -127,10 +127,6 @@ post '/file/*.edit' do
   redirect @file.path
 end
 
-get '/file/*' do
-  @file = Model::File.find(:id => params[:splat].first)
-  haml :file
-end
 
 post '/file/*.note' do
   @file = Model::File.find(:id => params[:splat].first)
@@ -142,6 +138,18 @@ post '/file/*.note' do
     return haml :"file"
   end
   redirect @file.path
+end
+
+get '/file/*.blob' do
+  @file = Model::File.find(:id => params[:splat].first)
+  response['Content-Type'] = 'text/plain'
+  response['Content-Disposition'] = "attachment; filename=\"#{@file.name}\"";
+  @file.body
+end
+
+get '/file/*' do
+  @file = Model::File.find(:id => params[:splat].first)
+  haml :file
 end
 
 get '/user/*' do
