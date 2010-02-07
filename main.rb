@@ -27,9 +27,8 @@ helpers do
   end
 
   def authorized_as?(user)
-    authorized? && @current_user == user
+    throw(:halt, [401, "Not authorized\n"]) unless authorized? and @current_user == user
   end
-
 end
 
 before do
@@ -87,7 +86,7 @@ end
 
 post '/file/*.fork' do
   @file = Model::File.find(:id => params[:splat].first)
-  halt 400 unless parent
+  halt 400 unless @file
   begin
     new = @file.fork!(@current_user)
   rescue => e
