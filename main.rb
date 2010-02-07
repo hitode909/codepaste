@@ -147,8 +147,15 @@ get '/file/*.blob' do
   @file.body
 end
 
-get '/file/*' do
+get '/file/*.transfer' do
   @file = Model::File.find(:id => params[:splat].first)
+  haml :"file.transfer"
+end
+
+get %r{/file/(\d)\.?(\w+)?} do
+  logger.warn "unknown method \"#{params[:captures][1]}\"" if params[:captures][1]
+  logger.debug request
+  @file = Model::File.find(:id => params[:captures].first)
   haml :file
 end
 

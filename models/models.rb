@@ -47,8 +47,12 @@ module ::Model
     plugin :timestamps, :update_on_create => true
     create_table unless table_exists?
 
-    def path
-      "/file/#{self.id}"
+    def path(method = nil)
+      if method
+        "/file/#{self.id}.#{method}"
+      else
+        "/file/#{self.id}"
+      end
     end
 
     def fork!(user)

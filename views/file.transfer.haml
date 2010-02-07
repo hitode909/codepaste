@@ -1,0 +1,19 @@
+%h2= "transfering #{ @file.name }"
+%link{ :rel => "transfer", :href => @file.path("blob") }
+%h3.status waiting observer.
+
+-# from MozRepl
+-# (content.document.querySelector('link[rel=\"transfer\"]') || {}).href
+-# content.wrappedJSObject.start()
+-# content.wrappedJSObject.finish()
+
+:javascript
+  function start() {
+    $(".status").text("transfering file.");
+  }
+  function finish() {
+      $(".status").text("finished.");
+      setTimeout(function(){
+        location.href = "#{ @file.path }";
+      }, 1000);
+  };
