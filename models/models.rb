@@ -55,7 +55,7 @@ module ::Model
       end
     end
 
-    def fork!(user)
+    def copy!(user)
       self.class.create(:name => self.name, :body => self.body, :user => user, :parent => self)
     end
 

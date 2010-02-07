@@ -15,7 +15,7 @@
     %input{ :type => "submit", :value => "edit" }
 - else
   %h3 copy
-  %form{ :method => "post", :action => "/file/#{ @file.id }.fork" }
+  %form{ :method => "post", :action => "/file/#{ @file.id }.copy" }
     %input{ :type => "submit", :value => "copy" }
 
 %h3 preview

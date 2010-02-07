@@ -1,15 +1,15 @@
-%h2= "transfering #{ @file.name }"
-%link{ :rel => "transfer", :href => @file.path("blob") }
+%h2= "downloading #{ @file.name }"
+%link{ :rel => "download", :href => @file.path("blob") }
 %h3.status waiting observer.
 
 -# from MozRepl
--# (content.document.querySelector('link[rel=\"transfer\"]') || {}).href
+-# (content.document.querySelector('link[rel=\"download\"]') || {}).href
 -# content.wrappedJSObject.start()
 -# content.wrappedJSObject.finish()
 
 :javascript
   function start() {
-    $(".status").text("transfering file.");
+    $(".status").text("downloading file.");
   }
   function finish() {
       $(".status").text("finished.");

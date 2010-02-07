@@ -95,16 +95,16 @@ post '/file.create' do
   redirect file.path
 end
 
-post '/file/*.fork' do
+post '/file/*.copy' do
   @file = Model::File.find(:id => params[:splat].first)
   halt 400 unless @file
   begin
-    new = @file.fork!(@current_user)
+    new = @file.copy!(@current_user)
   rescue => e
     @errors.push(e.message)
     return haml :file
   end
-  redirect new.path
+  redirect new.path('download')
 end
 
 get '/file/*.edit' do
@@ -147,9 +147,9 @@ get '/file/*.blob' do
   @file.body
 end
 
-get '/file/*.transfer' do
+get '/file/*.download' do
   @file = Model::File.find(:id => params[:splat].first)
-  haml :"file.transfer"
+  haml :"file.download"
 end
 
 get %r{/file/(\d)\.?(\w+)?} do
