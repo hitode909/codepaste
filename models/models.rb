@@ -13,7 +13,7 @@ module ::Model
     end
     plugin :timestamps, :update_on_create => true
     one_to_many :files
-    one_to_many :notes
+    one_to_many :notes, :order => :created_at
     create_table unless table_exists?
 
     def self.register(name, password)
@@ -48,6 +48,10 @@ module ::Model
 
     def fork!(user)
       self.class.create(:name => self.name, :body => self.body, :user => user, :parent => self)
+    end
+
+    def add_note(args)
+      Note.create(args.update(:file => self))
     end
   end
 

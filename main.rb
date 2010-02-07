@@ -105,7 +105,7 @@ end
 
 post '/file/*.edit' do
   @file = Model::File.find(:id => params[:splat].first)
-  halt 400 unless @file
+  halt 400 unless @file and (params[:name] or params[:body])
   authorized_as? @file.user
   begin
     @file.update(:name => params[:name], :body => params[:body])
@@ -119,4 +119,16 @@ end
 get '/file/*' do
   @file = Model::File.find(:id => params[:splat].first)
   erb :file
+end
+
+post '/file/*.note' do
+  @file = Model::File.find(:id => params[:splat].first)
+  halt 400 unless @file and params[:body]
+  begin
+    @file.add_note(:name => params[:name], :body => params[:body], :user => @current_user)
+  rescue => e
+    @errors.push(e.message)
+    return erb :"file"
+  end
+  redirect @file.path
 end
