@@ -16,21 +16,32 @@ helpers do
     end
   end
 
-  def authorized?
+  def auth
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-    @auth.provided? &&
-      @auth.basic? &&
-      @auth.credentials &&
-      Model::User.login(*@auth.credentials)
+  end
+  def authorized?
+    auth.provided? &&
+      auth.basic? &&
+      auth.credentials &&
+      Model::User.login(*auth.credentials)
   end
 end
 
 before do
   @errors = []
   @messages = []
+
+  if request.request_method.downcase != 'get'
+    protected!
+  end
+
   if authorized?
     @messages.push "authorized as #{@auth.credentials.first}"
+    @current_user = auth.credentials ? Model::User.login(*auth.credentials) : nil
+  else
+    @messages.push "not authorized"
   end
+
 end
 
 get '/' do
