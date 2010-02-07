@@ -1,0 +1,16 @@
+!!!XML
+!!!
+
+%html
+  %head
+  %body
+  .header header
+  %hr
+    - @errors.each do |e|
+      %p= e
+    - @messages.each do |m|
+      %p= m
+  .content
+    !=  yield
+  %hr
+  .footer footer

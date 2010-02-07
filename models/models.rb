@@ -23,6 +23,11 @@ module ::Model
     def self.login(name, password)
       self.find(:name => name,:password => password)
     end
+
+    def path
+      "/user/#{self.id}"
+    end
+
   end
 
   class File < Sequel::Model

@@ -1,0 +1,13 @@
+%h1= @title
+.files
+  - @files.each do |file|
+    .file
+      .name!= entity_link(file)
+      .user!= entity_link(file.user)
+      .date= file.created_at
+
+.create
+  - if @current_user
+    %h3 create
+    %form{ :method => "get", :action => "/file.new" }
+      %input{ :type => "submit", :value => "create new file" }

@@ -1,0 +1,10 @@
+%h2 register
+
+%form{ :method => "post", :action => "/register" }
+  name:
+  %input{ :type => "text", :name => "name" }
+  %br
+  password:
+  %input{ :type => "text", :name => "password" }
+  %br
+  %input{ :type => "submit", :value => "register" }

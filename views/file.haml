@@ -1,0 +1,32 @@
+%h2= @file.name
+%dl
+  %dt name
+  %dd= @file.name
+  %dt created_at
+  %dd= @file.created_at
+  %dt updated_at
+  %dd= @file.updated_at
+  %dt author
+  %dd!=  entity_link(@file.user)
+
+- if @file.user == @current_user
+  %h3 edit
+  %form{ :method => "get", :action => "/file/#{ @file.id }.edit" }
+    %input{ :type => "submit", :value => "edit" }
+- else
+  %h3 copy
+  %form{ :method => "post", :action => "/file/#{ @file.id }.fork" }
+    %input{ :type => "submit", :value => "copy" }
+
+%h3 preview
+%pre= @file.body
+
+%h3 notes
+%ul.notes
+  != list_of @file.notes do |note|
+    .info!= "at #{ note.created_at } by #{ entity_link note.user }"
+    %pre= note.body
+
+%form{ :method => "post", :action => "/file/#{ @file.id }.note" }
+  %textarea{ :name => "body" }
+  %input{ :type => "submit", :value => "note" }

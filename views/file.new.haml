@@ -1,0 +1,10 @@
+%h2 new file
+
+%form{ :method => "post", :action => "/file.new" }
+  name:
+  %input{ :type => "text", :name => "name" }
+  %br
+  body:
+  %textarea{ :name => "body" }
+  %br
+  %input{ :type => "submit", :value => "create" }

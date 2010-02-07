@@ -1,0 +1,10 @@
+%h2 edit
+
+%form{ :method => "post", :action => "/file/#{ @file.id }.edit" }
+  name:
+  %input{ :type => "text", :name => "name", :value => @file.name  }
+  %br
+  body:
+  %textarea{ :name => "body"}= @file.body
+  %br
+  %input{ :type => "submit", :value => "edit" }

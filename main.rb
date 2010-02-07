@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'erb'
+require 'haml'
 require 'models/init'
 require 'logger'
 
@@ -27,9 +27,19 @@ helpers do
   end
 
   def authorized_as?(user)
-    throw(:halt, [401, "Not authorized\n"]) unless authorized? and @current_user == user
+    protected! unless @current_user
+    throw(:halt, [400, "You are not #{user.name}."]) unless @current_user == user
+  end
+
+  def entity_link(obj)
+    # obj must has path and name
+    haml '%a{:href => obj.path}= obj.name',
+    :locals => {:obj => obj},
+    :layout => false
   end
 end
+
+set :haml, :escape_html => true
 
 before do
   @errors = []
@@ -48,11 +58,12 @@ end
 
 get '/' do
   @title = Time.now
-  erb :index
+  @files = Model::File.all
+  haml :index
 end
 
 get '/register' do
-  erb :register
+  haml :register
 end
 
 post '/register' do
@@ -60,7 +71,7 @@ post '/register' do
     user = Model::User.register params[:name], params[:password]
   rescue => e
     @errors.push(e.message)
-    return erb :register
+    return haml :register
   end
   redirect params[:from] || '/'
 end
@@ -71,7 +82,7 @@ get '/login' do
 end
 
 get '/file.new' do
-  erb :"file.new"
+  haml :"file.new"
 end
 
 post '/file.new' do
@@ -79,7 +90,7 @@ post '/file.new' do
     file = Model::File.create(:name => params[:name], :body => params[:body], :user => @current_user)
   rescue => e
     @errors.push(e.message)
-    return erb :"file.new"
+    return haml :"file.new"
   end
   redirect file.path
 end
@@ -91,7 +102,7 @@ post '/file/*.fork' do
     new = @file.fork!(@current_user)
   rescue => e
     @errors.push(e.message)
-    return erb :file
+    return haml :file
   end
   redirect new.path
 end
@@ -100,7 +111,7 @@ get '/file/*.edit' do
   @file = Model::File.find(:id => params[:splat].first)
   halt 404 unless @file
   authorized_as? @file.user
-  erb :"file.edit"
+  haml :"file.edit"
 end
 
 post '/file/*.edit' do
@@ -111,14 +122,14 @@ post '/file/*.edit' do
     @file.update(:name => params[:name], :body => params[:body])
   rescue => e
     @errors.push(e.message)
-    return erb :"file.edit"
+    return haml :"file.edit"
   end
   redirect @file.path
 end
 
 get '/file/*' do
   @file = Model::File.find(:id => params[:splat].first)
-  erb :file
+  haml :file
 end
 
 post '/file/*.note' do
@@ -128,7 +139,7 @@ post '/file/*.note' do
     @file.add_note(:name => params[:name], :body => params[:body], :user => @current_user)
   rescue => e
     @errors.push(e.message)
-    return erb :"file"
+    return haml :"file"
   end
   redirect @file.path
 end
