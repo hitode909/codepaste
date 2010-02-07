@@ -81,16 +81,16 @@ get '/login' do
   redirect params[:from] || '/'
 end
 
-get '/file.new' do
-  haml :"file.new"
+get '/file.create' do
+  haml :"file.create"
 end
 
-post '/file.new' do
+post '/file.create' do
   begin
     file = Model::File.create(:name => params[:name], :body => params[:body], :user => @current_user)
   rescue => e
     @errors.push(e.message)
-    return haml :"file.new"
+    return haml :"file.create"
   end
   redirect file.path
 end
