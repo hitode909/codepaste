@@ -143,3 +143,9 @@ post '/file/*.note' do
   end
   redirect @file.path
 end
+
+get '/user/*' do
+  @user = Model::User.find(:id => params[:splat].first)
+  haml :user
+end
+
