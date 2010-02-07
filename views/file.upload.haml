@@ -1,0 +1,31 @@
+%h2= "downloading #{ @file.name }"
+%link{ :rel => "upload", :href => @file.path("blob") }
+%h3.status waiting observer.
+
+%form{ :method => "post", :action => "/file/#{ @file.id }.edit" }
+  %input.name{ :type => "text", :name => "name", :value => @file.name  }
+  %textarea.body{ :name => "body"}= @file.body
+  %input{ :type => "submit", :value => "edit" }
+
+-# from MozRepl
+-# (content.document.querySelector('link[rel=\"upload\"]') || {}).href
+-# content.wrappedJSObject.setName(string) (optional)
+-# content.wrappedJSObject.setBody(string)
+-# content.wrappedJSObject.finish()
+
+:javascript
+  function setName(name) {
+      $("input.name").attr("value", name);
+      return true;
+  }
+  function setBody(body) {
+      $("textarea.body").text(body);
+      return true;
+  }
+  function finish() {
+      $(".status").text("finished.");
+      setTimeout(function(){
+        $("form").submit();
+      }, 1000);
+      return true;
+  };

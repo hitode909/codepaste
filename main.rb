@@ -127,6 +127,12 @@ post '/file/*.edit' do
   redirect @file.path
 end
 
+get '/file/*.upload' do
+  @file = Model::File.find(:id => params[:splat].first)
+  halt 404 unless @file
+  authorized_as? @file.user
+  haml :"file.upload"
+end
 
 post '/file/*.note' do
   @file = Model::File.find(:id => params[:splat].first)
