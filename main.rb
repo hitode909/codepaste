@@ -23,8 +23,13 @@ helpers do
     auth.provided? &&
       auth.basic? &&
       auth.credentials &&
-      Model::User.login(*auth.credentials)
+      @current_user = Model::User.login(*auth.credentials)
   end
+
+  def authorized_as?(user)
+    authorized? && @current_user == user
+  end
+
 end
 
 before do
@@ -37,7 +42,6 @@ before do
 
   if authorized?
     @messages.push "authorized as #{@auth.credentials.first}"
-    @current_user = Model::User.login(*auth.credentials)
   else
     @messages.push "not authorized"
   end
@@ -54,13 +58,12 @@ end
 
 post '/register' do
   begin
-    user = Model::User.register params[:name], params[:password] # TODO
+    user = Model::User.register params[:name], params[:password]
   rescue => e
     @errors.push(e.message)
     return erb :register
-  else
-    redirect params[:from] || '/'
   end
+  redirect params[:from] || '/'
 end
 
 get '/login' do
@@ -83,28 +86,38 @@ post '/file.new' do
 end
 
 post '/file/*.fork' do
-  parent = Model::File.find(:id => params[:splat].first)
+  @file = Model::File.find(:id => params[:splat].first)
   halt 400 unless parent
-  new = parent.fork!(@current_user)
+  begin
+    new = @file.fork!(@current_user)
+  rescue => e
+    @errors.push(e.message)
+    return erb :file
+  end
   redirect new.path
 end
 
 get '/file/*.edit' do
   @file = Model::File.find(:id => params[:splat].first)
   halt 404 unless @file
+  authorized_as? @file.user
   erb :"file.edit"
 end
 
 post '/file/*.edit' do
-  file = Model::File.find(:id => params[:splat].first)
-  halt 400 unless file
-  file.update(:name => params[:name], :body => params[:body])
-  redirect file.path
+  @file = Model::File.find(:id => params[:splat].first)
+  halt 400 unless @file
+  authorized_as? @file.user
+  begin
+    @file.update(:name => params[:name], :body => params[:body])
+  rescue => e
+    @errors.push(e.message)
+    return erb :"file.edit"
+  end
+  redirect @file.path
 end
 
 get '/file/*' do
-  # splat = file.id
   @file = Model::File.find(:id => params[:splat].first)
-  p @file
   erb :file
 end
