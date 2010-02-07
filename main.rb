@@ -68,40 +68,6 @@ get '/login' do
   redirect params[:from] || '/'
 end
 
-=begin
-get '/project.new' do
-  erb :"project.new"
-end
-
-post '/project.new' do
-  begin
-    project = Model::Project.create(:name => params[:name], :description => params[:description], :user => @current_user)
-  rescue => e
-    @errors.push(e.message)
-    return erb :"project.new"
-  end
-  redirect project.path
-end
-
-get '/project/*' do
-  # splat = project.id
-  @project = Model::Project.find(params[:splat])
-  logger.debug @project
-  erb :project
-end
-
-post '/project/*.add_file' do
-  # splat = project.id
-  project = Model::Project.find(params[:splat])
-  halt 400 unless @project and params[:name] and params[:body]
-  file = project.add_file(
-    :name => params[:name],
-    :body => params[:body]
-    )
-  redirect project.path
-end
-=end
-
 get '/file.new' do
   erb :"file.new"
 end
