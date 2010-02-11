@@ -6,7 +6,6 @@ describe Model::File do
   include Model
   before do
     @aliver = load("model/user__aliver")
-    @diary = load("model/project__diary")
     @title = load("model/file__title")
   end
 
@@ -21,8 +20,5 @@ describe Model::File do
   end
   it 'has user relation' do
     @title.user.should == @aliver
-  end
-  it 'has project relation' do
-    @title.project.should == @diary
   end
 end
