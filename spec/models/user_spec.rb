@@ -44,4 +44,54 @@ describe Model::User do
   it 'has notes relations' do
     @aliver.notes.should == [@hey]
   end
+
+  it 'provides register method' do
+    j = Model::User.register('jjj', 'kkk')
+    j.should be_kind_of Model::User
+    j.name.should == 'jjj'
+    j.password.should == 'kkk'
+  end
+
+  it 'cannot create same name users' do
+    a = Model::User.register('aaa', 'aaa')
+    a.should be_kind_of Model::User
+    lambda{
+      Model::User.register('aaa', 'aaa')
+    }.should raise_error
+  end
+
+  it 'rejects empty name or password' do
+    lambda{
+      Model::User.register('', '')
+    }.should raise_error
+
+    lambda{
+      Model::User.register('ok', '')
+    }.should raise_error
+
+    lambda{
+      Model::User.register('', 'ok')
+    }.should raise_error
+  end
+
+  it 'provides login method' do
+    a = Model::User.register('aaa', 'aaa')
+    a2 = Model::User.login('aaa', 'aaa')
+    a2.should be_kind_of Model::User
+  end
+
+  it 'will reject login with wrong password' do
+    who = Model::User.login('aliver', 'aaaaaaa')
+    who.should be_nil
+  end
+
+  it 'will reject login of not exist user' do
+    who = Model::User.login('abcdefg', 'abcdefg')
+    who.should be_nil
+  end
+
+  it 'has path method' do
+    @aliver.path.should  == '/user/1'
+    @aliver.path('hello').should  == '/user/1.hello'
+  end
 end

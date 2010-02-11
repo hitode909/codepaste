@@ -1,8 +1,20 @@
 module ::Model
+  module ModelHelper
+    def path(method = nil)
+      namespace = self.class.to_s.split('::').last.downcase
+      if method
+        "/#{namespace}/#{self.id}.#{method}"
+      else
+        "/#{namespace}/#{self.id}"
+      end
+    end
+  end
+
   class User < Sequel::Model
+    include ModelHelper
     set_schema do
       primary_key :id
-      String :name, :null => false
+      String :name, :null => false, :unique => true
       String :password, :null => false
       String :mail#, :null => false
       String :profile
@@ -11,10 +23,16 @@ module ::Model
       datetime :created_at
       datetime :updated_at
     end
-    plugin :timestamps, :update_on_create => true
+
+    def validate
+      errors.add(:name, "can't be empty") if name.empty?
+      errors.add(:password, "can't be empty") if password.empty?
+    end
+
     one_to_many :files
     one_to_many :notes, :order => :created_at
     create_table unless table_exists?
+    plugin :timestamps, :update_on_create => true
 
     def self.register(name, password)
       self.create(:name => name,:password => password)
@@ -24,13 +42,10 @@ module ::Model
       self.find(:name => name,:password => password)
     end
 
-    def path
-      "/user/#{self.id}"
-    end
-
   end
 
   class File < Sequel::Model
+    include ModelHelper
     set_schema do
       primary_key :id
       String :name, :null => false
@@ -47,14 +62,6 @@ module ::Model
     plugin :timestamps, :update_on_create => true
     create_table unless table_exists?
 
-    def path(method = nil)
-      if method
-        "/file/#{self.id}.#{method}"
-      else
-        "/file/#{self.id}"
-      end
-    end
-
     def copy!(user)
       self.class.create(:name => self.name, :body => self.body, :user => user, :parent => self)
     end
@@ -65,6 +72,7 @@ module ::Model
   end
 
   class Note < Sequel::Model
+    include ModelHelper
     set_schema do
       primary_key :id
       String :name
