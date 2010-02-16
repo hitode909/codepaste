@@ -45,7 +45,7 @@ before do
   @errors = []
   @messages = []
 
-  if request.request_method.downcase != 'get'
+  if request.request_method.downcase != 'get' and request.path_info != '/register'
     protected!
   end
 
