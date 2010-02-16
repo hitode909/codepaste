@@ -90,7 +90,7 @@ describe Model::User do
     who.should be_nil
   end
 
-  it 'has path method' do
+  it 'has (common) path method' do
     @aliver.path.should  == '/user/1'
     @aliver.path('hello').should  == '/user/1.hello'
   end

@@ -1,5 +1,6 @@
 %h2= "downloading #{ @file.name }"
 %link{ :rel => "download", :href => @file.path("blob") }
+%meta{ :type => "codepaste-command", :command => "download" }
 %h3.status waiting observer.
 
 -# from MozRepl
