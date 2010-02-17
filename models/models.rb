@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module ::Model
   module ModelHelper
     def path(method = nil)
@@ -10,6 +11,7 @@ module ::Model
     end
   end
 
+  # create database c2 default character set 'utf8';
   class User < Sequel::Model
     include ModelHelper
     set_schema do
@@ -42,6 +44,22 @@ module ::Model
       self.find(:name => name,:password => password)
     end
 
+    def self.authenticate(name, password)
+      self.find(:name => name, :password => password)
+    end
+
+    # XXX wardenの仕様に合わせて，find(id)で引けるようにする
+    class << self
+      alias :_original_find :find
+      def find(*args)
+        p args
+        if args.length == 1 and args.first.kind_of? Integer
+          self._original_find(:id => args.first)
+        else
+          self._original_find(args)
+        end
+      end
+    end
   end
 
   class File < Sequel::Model
