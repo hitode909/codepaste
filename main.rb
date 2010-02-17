@@ -56,7 +56,6 @@ class CodePasteApp < Sinatra::Base
   end
 
   get '/' do
-    @title = Time.now
     @files = Model::File.all
     haml :index
   end

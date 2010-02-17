@@ -1,4 +1,4 @@
-%h1= @title
+%h3 files
 .files
   - @files.each do |file|
     .file
@@ -7,7 +7,7 @@
       .date= file.created_at
 
 .create
-  - if @current_user
+  - if current_user
     %h3 create
     %form{ :method => "get", :action => "/file.create" }
       %input{ :type => "submit", :value => "create new file" }
