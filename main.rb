@@ -36,6 +36,9 @@ class CodePasteApp < Sinatra::Base
    end
 
    set :haml, :escape_html => true
+   set :static, true
+   set :public, File.dirname(__FILE__) + '/public'
+
 
    before do
      @errors = []
