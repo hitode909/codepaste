@@ -161,7 +161,7 @@ class CodePasteApp < Sinatra::Base
     @file = Model::File.find(:id => params[:splat].first)
     response['Content-Type'] = 'text/plain'
     response['Content-Disposition'] = "attachment; filename=\"#{@file.name}\"";
-    @file.body
+    @file.body.to_s
   end
 
   get '/file/*.download' do
