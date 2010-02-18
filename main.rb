@@ -33,6 +33,12 @@ class CodePasteApp < Sinatra::Base
       :locals => {:obj => obj},
       :layout => false
     end
+
+    def authorized_as?(user)
+      unless current_user == user
+        halt 400
+      end
+    end
   end
 
   set :haml, :escape_html => true
