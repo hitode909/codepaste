@@ -2,9 +2,8 @@
 .files
   - @files.each do |file|
     .file
-      .name!= entity_link(file)
-      .user!= entity_link(file.user)
-      .date= file.created_at
+      %span.name!= entity_link(file)
+      %span.preview= file.body
 
 .create
   - if current_user

@@ -14,3 +14,28 @@ body {
     color: red;
     font-size: 150%;
 }
+
+pre.preview {
+    margin: 1em;
+    font-size: 90%;
+}
+
+span.preview {
+    overflow-x: hidden;
+    color: #666;
+    font-size: 90%;
+}
+ul.menu {
+    padding: 0;
+}
+
+ul.menu li {
+    text-align: center;
+    display: inline-block;
+    margin-right: 1em;
+}
+
+ul.notes {
+    padding: 0;
+    list-style: none;
+}
