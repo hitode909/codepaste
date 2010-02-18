@@ -17,9 +17,15 @@
   function start() {
     $(".status").text("downloading file.");
   }
-  function finish(name) {
+  function succeed(name) {
       $("meta[name=codepaste-command]").remove();
       $("link[rel=download]").remove();
       $(".status").text(name ? "You got project " + name : "finished");
       $("a.hidden").show("slow");
   };
+  function failed(message) {
+      $("meta[name=codepaste-command]").remove();
+      $("link[rel=download]").remove();
+      $(".status").addClass("error").text(message);
+      $("a.hidden").show("slow");
+  }
