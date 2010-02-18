@@ -1,11 +1,13 @@
-%h2= "downloading #{ @file.name }"
+%h2= "uploading #{ @file.name }"
 %meta{ :name => "codepaste-command", :content => "upload" }
 %link{ :rel => "upload", :href => @file.path("blob") }
 %meta{ :name => "project", :content => @file.project_name }
 %meta{ :name => "file", :content => @file.name }
-%h3.status waiting observer.
 
-%form{ :method => "post", :action => "/file/#{ @file.id }.edit" }
+%h3.status waiting observer.
+%a.hidden{ :href => @file.path} back
+
+%form.hidden{ :method => "post", :action => "/file/#{ @file.id }.edit" }
   %input.name{ :type => "text", :name => "name", :value => @file.name  }
   %textarea.body{ :name => "body"}= @file.body
   %input{ :type => "submit", :value => "edit" }
@@ -22,13 +24,19 @@
       return true;
   }
   function setBody(body) {
-      $("textarea.body").text(body);
+      $("textarea.body").text(decodeURIComponent(body.replace(/\+/g, " "))); // XXX: SUPER BK
       return true;
   }
-  function finish() {
+  function succeed() {
       $(".status").text("finished.");
       setTimeout(function(){
         $("form").submit();
       }, 1000);
       return true;
   };
+  function failed(message) {
+      $("meta[name=codepaste-command]").remove();
+      $("link[rel=upload]").remove();
+      $(".status").addClass("error").text(message);
+      $("a.hidden").show("slow");
+  }

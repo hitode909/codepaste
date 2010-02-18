@@ -1,9 +1,8 @@
 %h2= "downloading #{ @file.name }"
-.metablock
-  %meta{ :name => "codepaste-command", :content => "download" }
-  %link{ :rel => "download", :href => @file.path("blob") }
-  %meta{ :name => "project", :content => @file.project_name }
-  %meta{ :name => "file", :content => @file.name }
+%meta{ :name => "codepaste-command", :content => "download" }
+%link{ :rel => "download", :href => @file.path("blob") }
+%meta{ :name => "project", :content => @file.project_name }
+%meta{ :name => "file", :content => @file.name }
 
 %h3.status waiting observer.
 %a.hidden{ :href => @file.path} back
