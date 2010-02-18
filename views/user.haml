@@ -1,6 +1,13 @@
-%h1= @user.name
-.files
+%h1!= entity_link @user
+
+%table.files
+  %tr
+    %th file
+    %th author
+    %th preview
   - @user.files.each do |file|
-    .file
-      .name!= entity_link(file)
-      .date= file.created_at
+    %tr.file
+      %td!= entity_link(file)
+      %td!= entity_link(file.user)
+      %td
+        %span.preview= file.body

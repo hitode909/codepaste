@@ -1,9 +1,16 @@
 %h3 files
-.files
+
+%table.files
+  %tr
+    %th file
+    %th author
+    %th preview
   - @files.each do |file|
-    .file
-      %span.name!= entity_link(file)
-      %span.preview= file.body
+    %tr.file
+      %td!= entity_link(file)
+      %td!= entity_link(file.user)
+      %td
+        %span.preview= file.body
 
 .create
   - if current_user

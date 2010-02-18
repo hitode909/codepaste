@@ -39,3 +39,22 @@ ul.notes {
     padding: 0;
     list-style: none;
 }
+
+table.files, table.files th, table.files td {
+    border: solid 1px #333;
+    border-collapse: collapse;
+    padding: 4px;
+}
+
+img {
+    border: none;
+}
+
+a {
+    border: none;
+    color: #000;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}

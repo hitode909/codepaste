@@ -1,7 +1,12 @@
 %h2
-  = @file.name
+  != entity_link(@file)
   by
   != entity_link(@file.user)
+  - if @file.parent
+    copy of
+    != entity_link(@file.parent)
+    by
+    != entity_link(@file.parent.user)
 
 %ul.menu
   - if @file.user == current_user
