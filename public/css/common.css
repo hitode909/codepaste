@@ -73,7 +73,7 @@ form.edit-file textarea {
     height: 300px;
 }
 
-form#add-note textarea {
+form.add-note textarea {
     width: 350px;
     height: 200px;
     display: block;
