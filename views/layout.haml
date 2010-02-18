@@ -6,12 +6,22 @@
     %link{ :rel => "stylesheet", :href => "/css/common.css", :type => "text/css" }
     %script{ :type => "text/javascript", :src => "/js/jquery-1.4.1.min.js" }
   %body
-  .header header
-  %hr
-    - @errors.each do |e|
-      %p= e
-    - @messages.each do |m|
-      %p= m
+  .header-navigation
+    - if current_user
+      Hi,
+      != entity_link(current_user)
+      %a{ :href => '/logout' } logout
+    - else
+      %a{ :href => '/register' } register
+      %a{ :href => '/login'    } login
+  %h1.header
+    %a{ :href => '/' } CodePaste
+  - if @errors.length > 0 || @messages.length > 0
+    %hr
+      - @errors.each do |e|
+        %p= e
+      - @messages.each do |m|
+        %p= m
   %hr
   %h1= @title
   .content

@@ -44,14 +44,10 @@ class CodePasteApp < Sinatra::Base
     @errors = []
     @messages = []
 
-    if request.request_method.downcase != 'get' and request.path_info != '/register'
+    if request.request_method.downcase != 'get' and
+        request.path_info != '/register' and
+        request.path_info != '/login'
       must_be_authorized!
-    end
-
-    if logged_in?
-      @messages.push "authorized as #{current_user.name}"
-    else
-      @messages.push "not authorized"
     end
   end
 
