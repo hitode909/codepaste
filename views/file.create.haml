@@ -1,10 +1,16 @@
-%h2 new file
+%h2 create new file
 
-%form{ :method => "post", :action => "/file.create" }
-  name:
-  %input{ :type => "text", :name => "name" }
-  %br
-  body:
-  %textarea{ :name => "body" }
-  %br
-  %input{ :type => "submit", :value => "create" }
+%form.edit-file{ :method => "post", :action => "/file.create" }
+  %table
+    %tr
+      %th name
+      %td
+        %input{ :type => "text", :name => "name" }
+    %tr
+      %th body
+      %td
+        %textarea{ :name => "body" }
+    %tr
+      %th
+      %td
+        %input{ :type => "submit", :value => "create" }

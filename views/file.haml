@@ -37,6 +37,6 @@
       by
       != entity_link note.user
 
-%form{ :method => "post", :action => "/file/#{ @file.id }.note" }
+%form.add-note{ :method => "post", :action => "/file/#{ @file.id }.note" }
   %textarea{ :name => "body" }
   %input{ :type => "submit", :value => "note" }
