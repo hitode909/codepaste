@@ -88,7 +88,7 @@ class CodePasteApp < Sinatra::Base
 
   get '/logout/?' do
     logout_user!
-    redirect '/login'
+    redirect '/'
   end
 
 
