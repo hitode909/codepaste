@@ -7,13 +7,13 @@
 %h3.status waiting observer.
 %a.hidden{ :href => @file.path} back
 
--# from MozRepl
--# (content.document.querySelector('link[rel=\"download\"]') || {}).href
--# content.wrappedJSObject.start()
--# content.wrappedJSObject.finish()
+.overwrite
+  %label
+    %input{ :type => 'checkbox', :id => 'overwrite' }allow overwrite
 
 :javascript
   function start() {
+    $("input#overwrite").attr("disabled", true);
     $(".status").text("downloading file.");
   }
   function succeed(name) {
@@ -21,10 +21,14 @@
       $("link[rel=download]").remove();
       $(".status").text(name ? "You got project " + name : "finished");
       $("a.hidden").show("slow");
+      $(".overwrite").remove();
   };
   function failed(message) {
       $("meta[name=codepaste-command]").remove();
       $("link[rel=download]").remove();
-      $(".status").addClass("error").text(message);
+      $(".status").addClass("error").text(mydecode(message));
       $("a.hidden").show("slow");
+  }
+  function mydecode(body) {
+      return decodeURIComponent(body.replace(/\+/g, " "))
   }

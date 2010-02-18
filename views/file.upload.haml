@@ -12,19 +12,13 @@
   %textarea.body{ :name => "body"}= @file.body
   %input{ :type => "submit", :value => "edit" }
 
--# from MozRepl
--# (content.document.querySelector('link[rel=\"upload\"]') || {}).href
--# content.wrappedJSObject.setName(string) (optional)
--# content.wrappedJSObject.setBody(string)
--# content.wrappedJSObject.finish()
-
 :javascript
   function setName(name) {
       $("input.name").attr("value", name);
       return true;
   }
   function setBody(body) {
-      $("textarea.body").text(decodeURIComponent(body.replace(/\+/g, " "))); // XXX: SUPER BK
+      $("textarea.body").text(mydecode(body));
       return true;
   }
   function succeed() {
@@ -37,6 +31,9 @@
   function failed(message) {
       $("meta[name=codepaste-command]").remove();
       $("link[rel=upload]").remove();
-      $(".status").addClass("error").text(message);
+      $(".status").addClass("error").text(mydecode(message));
       $("a.hidden").show("slow");
+  }
+  function mydecode(body) {
+      return decodeURIComponent(body.replace(/\+/g, " "))
   }
