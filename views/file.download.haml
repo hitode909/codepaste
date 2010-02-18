@@ -13,7 +13,8 @@
 
 :javascript
   function start() {
-    $("input#overwrite").attr("disabled", true);
+    // XXX: disabled will cached
+    //$("input#overwrite").attr("disabled", true);
     $(".status").text("downloading file.");
   }
   function succeed(name) {
