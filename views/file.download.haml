@@ -1,7 +1,12 @@
 %h2= "downloading #{ @file.name }"
-%link{ :rel => "download", :href => @file.path("blob") }
-%meta{ :type => "codepaste-command", :command => "download" }
+.metablock
+  %meta{ :name => "codepaste-command", :content => "download" }
+  %link{ :rel => "download", :href => @file.path("blob") }
+  %meta{ :name => "project", :content => @file.project_name }
+  %meta{ :name => "file", :content => @file.name }
+
 %h3.status waiting observer.
+%a.hidden{ :href => @file.path} back
 
 -# from MozRepl
 -# (content.document.querySelector('link[rel=\"download\"]') || {}).href
@@ -12,9 +17,9 @@
   function start() {
     $(".status").text("downloading file.");
   }
-  function finish() {
-      $(".status").text("finished.");
-      setTimeout(function(){
-        location.href = "#{ @file.path }";
-      }, 1000);
+  function finish(name) {
+      $("meta[name=codepaste-command]").remove();
+      $("link[rel=download]").remove();
+      $(".status").text(name ? "You got project " + name : "finished");
+      $("a.hidden").show("slow");
   };

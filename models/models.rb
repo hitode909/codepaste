@@ -87,6 +87,10 @@ module ::Model
     def add_note(args)
       Note.create(args.update(:file => self))
     end
+
+    def project_name
+      ['CodePaste', self.id].join('-')
+    end
   end
 
   class Note < Sequel::Model

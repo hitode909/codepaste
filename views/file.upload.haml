@@ -1,5 +1,8 @@
 %h2= "downloading #{ @file.name }"
+%meta{ :name => "codepaste-command", :content => "upload" }
 %link{ :rel => "upload", :href => @file.path("blob") }
+%meta{ :name => "project", :content => @file.project_name }
+%meta{ :name => "file", :content => @file.name }
 %h3.status waiting observer.
 
 %form{ :method => "post", :action => "/file/#{ @file.id }.edit" }
