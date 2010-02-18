@@ -58,7 +58,7 @@ class CodePasteApp < Sinatra::Base
   end
 
   get '/' do
-    @files = Model::File.all
+    @files = Model::File.order(:updated_at.desc).all
     haml :index
   end
 
