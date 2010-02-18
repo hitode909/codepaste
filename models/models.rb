@@ -67,7 +67,7 @@ module ::Model
     set_schema do
       primary_key :id
       String :name, :null => false
-      String :body, :null => false
+      Text :body,   :null => false
       foreign_key :user_id, :null => false
       foreign_key :parent_id
       datetime :created_at
@@ -98,7 +98,7 @@ module ::Model
     set_schema do
       primary_key :id
       String :name
-      String :body, :null => false
+      Text   :body, :null => false
       foreign_key :user_id, :null => false
       foreign_key :file_id, :null => false
       datetime :created_at
