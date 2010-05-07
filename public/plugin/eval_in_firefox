@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+require 'logger'
+require 'timeout'
+require 'socket'
+require 'optparse'
+require "stringio"
+
+class Connection
+  def initialize(args)
+    @host = args[:host] || 'localhost'
+    @port = args[:port] || 4242
+    @debug = !!args[:debug]
+    setup_agent
+    logger.debug("instance created")
+  end
+  attr_accessor :repl_name
+
+  def setup_agent
+    @agent = TCPSocket.new(@host, @port)
+    logger.info("connect to #{@host}:#{@port}")
+    @repl_name = read.scan(/yours will be named "(.*)"/).flatten.last || 'repl'
+    logger.debug("repl_name: #{@repl_name}")
+    self.do("_ = #{@repl_name};_.setenv('inputMode', 'multiline');undefined;")
+  end
+
+  def do(str)
+    puts(str.to_s)
+    puts("\n--end-remote-input\n")
+    read
+  rescue Errno::EPIPE, Errno::ECONNRESET => e
+    logger.error("connection seems broken")
+    @agent = nil
+    setup_agent
+    self.do(str)
+  end
+
+  def puts(str)
+    logger.debug("send: #{str}")
+    agent.puts(str)
+  end
+
+  def close
+    agent.close
+  end
+
+  def read
+    result = ""
+    while result += agent.recv(1000) do
+      logger.debug("receive: #{result.inspect}")
+      return result.split("\n")[0...-1].join("\n") if result =~ /#{@repl_name}> $/
+    end
+    result
+  end
+
+  def agent
+    setup_agent unless @agent
+    @agent
+  end
+
+  def logger
+    @logger ||= Logger.new(@debug ? STDERR : StringIO.new)
+  end
+end
+
+params = {}
+debug = false
+OptionParser.new {|opt|
+  opt.on('--debug') { params[:debug] = true }
+  opt.on('--host VALUE') {|v| params[:host] = v }
+  opt.on('--port VALUE') {|v| params[:port] = v }
+  opt.parse!(ARGV)
+}
+
+c = Connection.new(params)
+puts c.do(ARGV.join(" "))
+c.close
