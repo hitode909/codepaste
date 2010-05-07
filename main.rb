@@ -62,6 +62,10 @@ class CodePasteApp < Sinatra::Base
     haml :index
   end
 
+  get '/help' do
+    haml :help
+  end
+
   get '/register' do
     haml :register
   end

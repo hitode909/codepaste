@@ -10,8 +10,10 @@
     - if current_user
       Hi,
       != entity_link(current_user)
+      %a{ :href => '/help' } help
       %a{ :href => '/logout' } logout
     - else
+      %a{ :href => '/help' } help
       %a{ :href => '/register' } register
       %a{ :href => '/login'    } login
   %h1.header
